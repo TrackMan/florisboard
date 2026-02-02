@@ -19,6 +19,7 @@ package dev.patrickgold.florisboard.app
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import dev.patrickgold.florisboard.app.localization.Subtypes
 import dev.patrickgold.florisboard.app.settings.theme.ColorPreferenceSerializer
 import dev.patrickgold.florisboard.app.settings.theme.DisplayKbdAfterDialogs
 import dev.patrickgold.florisboard.app.settings.theme.SnyggLevel
@@ -91,7 +92,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val suggestionEnabled = boolean(
             key = "clipboard__suggestion_enabled",
-            default = true,
+            default = false,
         )
         val suggestionTimeout = int(
             key = "clipboard__suggestion_timeout",
@@ -168,7 +169,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val doubleSpacePeriod = boolean(
             key = "correction__double_space_period",
-            default = true,
+            default = false,
         )
         val rememberCapsLockState = boolean(
             key = "correction__remember_caps_lock_state",
@@ -216,11 +217,11 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
     inner class Dictionary {
         val enableSystemUserDictionary = boolean(
             key = "suggestion__enable_system_user_dictionary",
-            default = true,
+            default = false,
         )
         val enableFlorisUserDictionary = boolean(
             key = "suggestion__enable_floris_user_dictionary",
-            default = true,
+            default = false,
         )
     }
 
@@ -236,7 +237,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val historyEnabled = boolean(
             key = "emoji__history_enabled",
-            default = true,
+            default = false,
         )
         val historyData = custom(
             key = "emoji__history_data",
@@ -261,7 +262,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val suggestionEnabled = boolean(
             key = "emoji__suggestion_enabled",
-            default = true,
+            default = false,
         )
         val suggestionType = enum(
             key = "emoji__suggestion_type",
@@ -269,7 +270,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val suggestionUpdateHistory = boolean(
             key = "emoji__suggestion_update_history",
-            default = true,
+            default = false,
         )
         val suggestionCandidateShowName = boolean(
             key = "emoji__suggestion_candidate_show_name",
@@ -297,11 +298,11 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val swipeLeft = enum(
             key = "gestures__swipe_left",
-            default = SwipeAction.SWITCH_TO_NEXT_SUBTYPE,
+            default = SwipeAction.NO_ACTION,
         )
         val swipeRight = enum(
             key = "gestures__swipe_right",
-            default = SwipeAction.SWITCH_TO_PREV_SUBTYPE,
+            default = SwipeAction.NO_ACTION,
         )
         val spaceBarSwipeUp = enum(
             key = "gestures__space_bar_swipe_up",
@@ -317,7 +318,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val spaceBarLongPress = enum(
             key = "gestures__space_bar_long_press",
-            default = SwipeAction.SHOW_INPUT_METHOD_PICKER,
+            default = SwipeAction.NO_ACTION,
         )
         val deleteKeySwipeLeft = enum(
             key = "gestures__delete_key_swipe_left",
@@ -345,7 +346,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val showTrail = boolean(
             key = "glide__show_trail",
-            default = true,
+            default = false,
         )
         val trailDuration = int(
             key = "glide__trail_fade_duration",
@@ -353,7 +354,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val showPreview = boolean(
             key = "glide__show_preview",
-            default = true,
+            default = false,
         )
         val previewRefreshDelay = int(
             key = "glide__preview_refresh_delay",
@@ -361,7 +362,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val immediateBackspaceDeletesWord = boolean(
             key = "glide__immediate_backspace_deletes_word",
-            default = true,
+            default = false,
         )
     }
 
@@ -369,7 +370,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
     inner class InputFeedback {
         val audioEnabled = boolean(
             key = "input_feedback__audio_enabled",
-            default = true,
+            default = false,
         )
         val audioActivationMode = enum(
             key = "input_feedback__audio_activation_mode",
@@ -381,7 +382,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val audioFeatKeyPress = boolean(
             key = "input_feedback__audio_feat_key_press",
-            default = true,
+            default = false,
         )
         val audioFeatKeyLongPress = boolean(
             key = "input_feedback__audio_feat_key_long_press",
@@ -402,7 +403,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
 
         val hapticEnabled = boolean(
             key = "input_feedback__haptic_enabled",
-            default = true,
+            default = false,
         )
         val hapticActivationMode = enum(
             key = "input_feedback__haptic_activation_mode",
@@ -422,7 +423,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val hapticFeatKeyPress = boolean(
             key = "input_feedback__haptic_feat_key_press",
-            default = true,
+            default = false,
         )
         val hapticFeatKeyLongPress = boolean(
             key = "input_feedback__haptic_feat_key_long_press",
@@ -430,7 +431,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val hapticFeatKeyRepeatedAction = boolean(
             key = "input_feedback__haptic_feat_key_repeated_action",
-            default = true,
+            default = false,
         )
         val hapticFeatGestureSwipe = boolean(
             key = "input_feedback__haptic_feat_gesture_swipe",
@@ -438,7 +439,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val hapticFeatGestureMovingSwipe = boolean(
             key = "input_feedback__haptic_feat_gesture_moving_swipe",
-            default = true,
+            default = false,
         )
     }
 
@@ -483,7 +484,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val hintedNumberRowEnabled = boolean(
             key = "keyboard__hinted_number_row_enabled",
-            default = true,
+            default = false,
         )
         val hintedNumberRowMode = enum(
             key = "keyboard__hinted_number_row_mode",
@@ -491,7 +492,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val hintedSymbolsEnabled = boolean(
             key = "keyboard__hinted_symbols_enabled",
-            default = true,
+            default = false,
         )
         val hintedSymbolsMode = enum(
             key = "keyboard__hinted_symbols_mode",
@@ -503,11 +504,11 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val utilityKeyAction = enum(
             key = "keyboard__utility_key_action",
-            default = UtilityKeyAction.DYNAMIC_SWITCH_LANGUAGE_EMOJIS,
+            default = UtilityKeyAction.SWITCH_LANGUAGE,
         )
         val spaceBarMode = enum(
             key = "keyboard__space_bar_display_mode",
-            default = SpaceBarMode.CURRENT_LANGUAGE,
+            default = SpaceBarMode.NOTHING,
         )
         val capitalizationBehavior = enum(
             key = "keyboard__capitalization_behavior",
@@ -535,7 +536,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val popupEnabled = boolean(
             key = "keyboard__popup_enabled",
-            default = true,
+            default = false,
         )
         val mergeHintPopupsEnabled = boolean(
             key = "keyboard__merge_hint_popups_enabled",
@@ -585,7 +586,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val subtypes = string(
             key = "localization__subtypes",
-            default = "[]",
+            default = Subtypes.TRACKMAN,
         )
     }
 
@@ -622,7 +623,7 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
     inner class Smartbar {
         val enabled = boolean(
             key = "smartbar__enabled",
-            default = true,
+            default = false,
         )
         val layout = enum(
             key = "smartbar__layout",
@@ -668,11 +669,11 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val useContacts = boolean(
             key = "spelling__use_contacts",
-            default = true,
+            default = false,
         )
         val useUdmEntries = boolean(
             key = "spelling__use_udm_entries",
-            default = true,
+            default = false,
         )
     }
 
@@ -713,12 +714,12 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
         )
         val dayThemeId = custom(
             key = "theme__day_theme_id",
-            default = extCoreTheme("floris_day"),
+            default = extCoreTheme("trackman_day"),
             serializer = ExtensionComponentName.Serializer,
         )
         val nightThemeId = custom(
             key = "theme__night_theme_id",
-            default = extCoreTheme("floris_night"),
+            default = extCoreTheme("trackman_night"),
             serializer = ExtensionComponentName.Serializer,
         )
         val accentColor = custom(
