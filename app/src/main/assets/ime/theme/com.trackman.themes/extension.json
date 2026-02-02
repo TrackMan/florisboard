@@ -1,0 +1,25 @@
+{
+  "$": "ime.extension.theme",
+  "meta": {
+    "id": "com.trackman.themes",
+    "version": "0.2.0",
+    "title": "Trackman default themes",
+    "description": "Trackman themes (both day and night) for the keyboard UI",
+    "maintainers": [ "trackman" ],
+    "license": "apache-2.0"
+  },
+  "themes": [
+    {
+      "id": "trackman_day",
+      "label": "Trackman Day",
+      "authors": [ "trackman" ],
+      "isNight": false
+    },
+    {
+      "id": "trackman_night",
+      "label": "Trackman Night",
+      "authors": [ "trackman" ],
+      "isNight": true
+    }
+  ]
+}

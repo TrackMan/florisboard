@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
@@ -86,7 +87,6 @@ import dev.patrickgold.florisboard.lib.Pointer
 import dev.patrickgold.florisboard.lib.PointerMap
 import dev.patrickgold.florisboard.lib.devtools.LogTopic
 import dev.patrickgold.florisboard.lib.devtools.flogDebug
-import dev.patrickgold.florisboard.lib.observeAsTransformingState
 import dev.patrickgold.florisboard.lib.toIntOffset
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import kotlinx.coroutines.channels.Channel
@@ -345,7 +345,7 @@ private fun TextKeyButton(
         val isTelPadKey = key.computedData.type == KeyType.NUMERIC && evaluator.keyboard.mode == KeyboardMode.PHONE
         key.label?.let { label ->
             var customLabel = label
-            if (key.computedData.code == KeyCode.SPACE) {
+            if (key.computedData.isSpaceKey()) {
                 val prefs by FlorisPreferenceStore
                 val spaceBarMode by prefs.keyboard.spaceBarMode.observeAsState()
                 when (spaceBarMode) {
@@ -368,6 +368,7 @@ private fun TextKeyButton(
                 selector = selector,
                 modifier = Modifier
                     .wrapContentSize()
+                    .padding(all = 4.dp)
                     .align(if (isTelPadKey) BiasAlignment(0.5f, 0f) else Alignment.TopEnd),
                 text = hintedLabel,
             )
@@ -585,7 +586,7 @@ private class TextKeyboardLayoutController(
                             false
                         }
                         KeyCode.LANGUAGE_SWITCH -> {
-                            inputEventDispatcher.sendDownUp(TextKeyData.SYSTEM_INPUT_METHOD_PICKER)
+                            inputEventDispatcher.sendDownUp(TextKeyData.SHOW_SUBTYPE_PICKER)
                             true
                         }
                         else -> {
