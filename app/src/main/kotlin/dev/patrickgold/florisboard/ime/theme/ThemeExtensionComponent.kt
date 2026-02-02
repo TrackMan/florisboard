@@ -27,7 +27,7 @@ import org.florisboard.lib.snygg.SnyggStylesheetEditor
 
 @Suppress("NOTHING_TO_INLINE")
 inline fun extCoreTheme(id: String) = ExtensionComponentName(
-    extensionId = "org.florisboard.themes",
+    extensionId = "com.trackman.themes",
     componentId = id,
 )
 
