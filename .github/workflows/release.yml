@@ -1,4 +1,4 @@
-name: Build MDM Release
+name: Build and Publish Release
 
 on:
   workflow_dispatch:
@@ -40,5 +40,5 @@ jobs:
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-signed.apk
+          name: trackman-keyboard-release.apk
           path: ${{ steps.sign_app.outputs.signedReleaseFile }}
