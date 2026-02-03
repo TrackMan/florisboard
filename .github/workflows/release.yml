@@ -27,8 +27,17 @@ jobs:
       - name: Build Release APK
         run: ./gradlew clean assembleRelease
 
+      - name: Detect latest Android Build Tools
+        run: |
+          # Find the latest directory in the build-tools folder
+          LATEST_BUILD_TOOLS=$(ls -1 $ANDROID_HOME/build-tools | sort -n | tail -1)
+          echo "LATEST_BUILD_TOOLS=$LATEST_BUILD_TOOLS" >> $GITHUB_ENV
+          echo "Found build-tools: $LATEST_BUILD_TOOLS"
+
       - name: Sign Release APK
         uses: r0adkll/sign-android-release@v1
+        env:
+          BUILD_TOOLS_VERSION: ${{ env.LATEST_BUILD_TOOLS }}
         id: sign_app
         with:
           releaseDirectory: app/build/outputs/apk/release
@@ -37,8 +46,11 @@ jobs:
           keyStorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
+      - name: Rename Signed APK
+        run: mv "${{ steps.sign_app.outputs.signedReleaseFile }}" trackman-keyboard-release.apk
+
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
         with:
-          name: trackman-keyboard-release.apk
-          path: ${{ steps.sign_app.outputs.signedReleaseFile }}
+          name: trackman-keyboard-release
+          path: trackman-keyboard-release.apk
