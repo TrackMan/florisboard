@@ -1,14 +1,12 @@
 <img align="left" width="80" height="80"
 src=".github/repo_icon.png" alt="App icon">
 
-# Kiosk Keyboard
+# Trackman Keyboard
 
 This is a custom version of **FlorisBoard** keyboard optimized for Range Kiosks use-cases.
 It removes unnecessary features and simplifies the user interface to provide a more
 focused typing experience. Access to settings and customization options are disabled
 to prevent users from changing the device configuration.
-
-**To build a version for MDM deployment, run the "Build MDM Release" workflow in GitHub Actions.**
 
 # FlorisBoard [![Crowdin](https://badges.crowdin.net/florisboard/localized.svg)](https://crowdin.florisboard.org) [![Matrix badge](https://img.shields.io/badge/chat-%23florisboard%3amatrix.org-blue)](https://matrix.to/#/#florisboard:matrix.org) [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
