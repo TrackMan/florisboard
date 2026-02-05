@@ -1,0 +1,66 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: TrackmanKeyboard
+
+steps:
+  - checkout: self
+    submodules: true
+
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: '17'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
+    displayName: 'Set up JDK 17'
+
+  - script: |
+      sudo apt-get update
+      sudo apt-get install -y cmake ninja-build
+    displayName: 'Set up CMake and Ninja'
+
+  - script: |
+      LATEST_BUILD_TOOLS=$(ls -1 $ANDROID_HOME/build-tools | sort -n | tail -1)
+      echo "##vso[task.setvariable variable=LATEST_BUILD_TOOLS]$LATEST_BUILD_TOOLS"
+      echo "Found build-tools: $LATEST_BUILD_TOOLS"
+    displayName: 'Detect latest Android Build Tools'
+
+  - task: DownloadSecureFile@1
+    name: downloadSigningCert
+    inputs:
+      secureFile: $(keystoreFileName)
+    displayName: 'Download Signing Certificate'
+
+  - script: |
+      cp keystore.properties keystore.properties.bak
+      cat <<EOF > keystore.properties
+      storeFile=$(downloadSigningCert.secureFilePath)
+      storePassword=$(keystorePassword)
+      keyAlias=$(keystoreAlias)
+      keyPassword=$(keystorePassword)
+      EOF
+    displayName: 'Configure Release keystore.properties'
+    env:
+      SIGNING_KEY_ALIAS: $(SIGNING_KEY_ALIAS)
+      SIGNING_STORE_PASSWORD: $(SIGNING_STORE_PASSWORD)
+      SIGNING_KEY_PASSWORD: $(SIGNING_KEY_PASSWORD)
+      downloadSigningCert.secureFilePath: $(downloadSigningCert.secureFilePath)
+
+  - script: ./gradlew clean assembleRelease
+    displayName: 'Build Release APK'
+
+  - script: mv app/build/outputs/apk/release/app-release.apk trackman-keyboard-release.apk
+    displayName: 'Rename Signed APK'
+
+  - script: mv keystore.properties.bak keystore.properties
+    displayName: 'Restore original keystore.properties'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: 'trackman-keyboard-release.apk'
+      artifact: 'trackman-keyboard-release'
+      publishLocation: 'pipeline'
+    displayName: 'Upload Signed APK'
