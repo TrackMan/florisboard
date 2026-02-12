@@ -32,7 +32,19 @@ steps:
     name: downloadSigningCert
     inputs:
       secureFile: $(keystoreFileName)
-    displayName: 'Download Signing Certificate'
+    displayName: 'Download Standard Signing Certificate'
+
+  - task: DownloadSecureFile@1
+    name: platformKeyFile
+    inputs:
+      secureFile: msinda2_platform.pk8
+    displayName: 'Download MSI Platform Key'
+
+  - task: DownloadSecureFile@1
+    name: platformCertFile
+    inputs:
+      secureFile: msinda2_platform.x509.pem
+    displayName: 'Download MSI Platform Certificate'
 
   - script: |
       cp keystore.properties keystore.properties.bak
@@ -43,31 +55,43 @@ steps:
       keyPassword=$(keystorePassword)
       EOF
     displayName: 'Configure Release keystore.properties'
-    env:
-      SIGNING_KEY_ALIAS: $(SIGNING_KEY_ALIAS)
-      SIGNING_STORE_PASSWORD: $(SIGNING_STORE_PASSWORD)
-      SIGNING_KEY_PASSWORD: $(SIGNING_KEY_PASSWORD)
-      downloadSigningCert.secureFilePath: $(downloadSigningCert.secureFilePath)
 
-  - script: ./gradlew clean assembleRelease
-    displayName: 'Build Release APK'
+  - script: ./gradlew clean assembleStandardRelease assembleMsiRelease
+    displayName: 'Build Release APKs (Standard & MSI)'
 
-  - script: mv app/build/outputs/apk/release/app-release.apk trackman-keyboard-release.apk
-    displayName: 'Rename Signed APK'
+  - script: mv app/build/outputs/apk/standard/release/app-standard-release.apk trackman-keyboard-release-standard.apk
+    displayName: 'Rename Standard Signed APK'
+
+  # Create MSI Variant: Re-sign the APK with Platform Keys
+  - script: |
+      echo "Locating apksigner..."
+      APKSIGNER="$ANDROID_HOME/build-tools/$(LATEST_BUILD_TOOLS)/apksigner"
+
+      echo "Signing MSI APK with Platform Keys..."
+      "$APKSIGNER" sign \
+        --key $(platformKeyFile.secureFilePath) \
+        --cert $(platformCertFile.secureFilePath) \
+        --out trackman-keyboard-release-msinda2.apk \
+        app/build/outputs/apk/msi/release/app-msi-release.apk
+
+      echo "Verifying MSI Signature..."
+      "$APKSIGNER" verify --verbose trackman-keyboard-release-msinda2.apk
+    displayName: 'Sign MSI APK with Platform Keys'
 
   - script: mv keystore.properties.bak keystore.properties
     displayName: 'Restore original keystore.properties'
 
   - script: |
-      # stop the Gradle daemon to ensure no files are left open
       ./gradlew --stop
-    displayName: Gradlew stop
+    displayName: 'Gradlew stop'
 
   - script: |
-      cp trackman-keyboard-release.apk $(Build.ArtifactStagingDirectory)
-    displayName: Copy APK to Artifacts
+      cp trackman-keyboard-release-standard.apk $(Build.ArtifactStagingDirectory)
+      cp trackman-keyboard-release-msinda2.apk $(Build.ArtifactStagingDirectory)
+    displayName: 'Copy APKs to Artifact folder'
 
   - task: PublishBuildArtifacts@1
+    displayName: 'Publish APK Artifacts'
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'trackman-keyboard-release'
