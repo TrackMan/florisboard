@@ -87,7 +87,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "dev.patrickgold.florisboard"
+        applicationId = "dk.trackman.keyboard"
         minSdk = projectMinSdk.toInt()
         targetSdk = projectTargetSdk.toInt()
         versionCode = projectVersionCode.toInt()
@@ -108,6 +108,18 @@ android {
                     srcDirs("src/main/kotlin")
                 }
             }
+        }
+    }
+
+    flavorDimensions.add("target")
+
+    productFlavors {
+        create("standard") {
+            dimension = "target"
+        }
+        create("msi") {
+            dimension = "target"
+            applicationIdSuffix = ".msinda2"
         }
     }
 
