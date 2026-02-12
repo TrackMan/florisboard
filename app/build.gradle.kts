@@ -81,7 +81,7 @@ configure<ApplicationExtension> {
     }
 
     defaultConfig {
-        applicationId = "dev.patrickgold.florisboard"
+        applicationId = "dk.trackman.keyboard"
         minSdk = projectMinSdk.toInt()
         targetSdk = projectTargetSdk.toInt()
         versionCode = projectVersionCode.toInt()
@@ -97,6 +97,18 @@ configure<ApplicationExtension> {
             maybeCreate("main").apply {
                 assets.directories += "src/main/assets"
             }
+        }
+    }
+
+    flavorDimensions.add("target")
+
+    productFlavors {
+        create("standard") {
+            dimension = "target"
+        }
+        create("msi") {
+            dimension = "target"
+            applicationIdSuffix = ".msinda2"
         }
     }
 
