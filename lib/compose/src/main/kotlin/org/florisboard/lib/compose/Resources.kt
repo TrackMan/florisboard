@@ -42,7 +42,7 @@ private val LocalResourcesContext = staticCompositionLocalOf<Context> {
 }
 
 private val LocalAppNameString = staticCompositionLocalOf {
-    "FlorisBoard"
+    "Trackman Keyboard"
 }
 
 val LocalLocalizedDateTimeFormatter = staticCompositionLocalOf {

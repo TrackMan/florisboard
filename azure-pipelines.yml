@@ -59,7 +59,7 @@ steps:
   - script: ./gradlew clean assembleStandardRelease assembleMsiRelease
     displayName: 'Build Release APKs (Standard & MSI)'
 
-  - script: mv app/build/outputs/apk/standard/release/app-standard-release.apk trackman-keyboard-release-standard.apk
+  - script: mv app/build/outputs/apk/standard/release/app-standard-release.apk dk.trackman.keyboard.apk
     displayName: 'Rename Standard Signed APK'
 
   # Create MSI Variant: Re-sign the APK with Platform Keys
@@ -71,11 +71,11 @@ steps:
       "$APKSIGNER" sign \
         --key $(platformKeyFile.secureFilePath) \
         --cert $(platformCertFile.secureFilePath) \
-        --out trackman-keyboard-release-msinda2.apk \
+        --out dk.trackman.keyboard.msinda2.apk \
         app/build/outputs/apk/msi/release/app-msi-release.apk
 
       echo "Verifying MSI Signature..."
-      "$APKSIGNER" verify --verbose trackman-keyboard-release-msinda2.apk
+      "$APKSIGNER" verify --verbose dk.trackman.keyboard.msinda2.apk
     displayName: 'Sign MSI APK with Platform Keys'
 
   - script: mv keystore.properties.bak keystore.properties
@@ -86,8 +86,8 @@ steps:
     displayName: 'Gradlew stop'
 
   - script: |
-      cp trackman-keyboard-release-standard.apk $(Build.ArtifactStagingDirectory)
-      cp trackman-keyboard-release-msinda2.apk $(Build.ArtifactStagingDirectory)
+      cp dk.trackman.keyboard.apk $(Build.ArtifactStagingDirectory)
+      cp dk.trackman.keyboard.msinda2.apk $(Build.ArtifactStagingDirectory)
     displayName: 'Copy APKs to Artifact folder'
 
   - task: PublishBuildArtifacts@1
