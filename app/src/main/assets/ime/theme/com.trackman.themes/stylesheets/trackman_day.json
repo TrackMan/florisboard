@@ -1,7 +1,7 @@
 {
   "$schema": "https://schemas.florisboard.org/snygg/v2/stylesheet",
   "@defines": {
-    "--primary": "#ec691b",
+    "--primary": "#ec691a",
     "--primary-variant": "#bc5314",
     "--secondary": "#ff9800",
     "--secondary-variant": "#e65100",
@@ -11,7 +11,7 @@
     "--surface-variant": "#f5f5f5",
 
     "--popup-surface": "#eeeeee",
-    "--focused-popup-surface": "#bdbdbd",
+    "--focused-popup-surface": "#ec691a",
 
     "--drag-marker": "rgb(255,0,0)",
     "--spacer-color": "rgba(0 ,0, 0, 0.25)",
@@ -70,15 +70,15 @@
   "key": {
     "background": "var(--surface)",
     "foreground": "var(--on-surface)",
-    "font-size": "26sp",
+    "font-size": "28sp",
     "font-family": "sans-serif",
     "shape": "var(--shape)",
-    "shadow-elevation": "2dp",
+    "shadow-elevation": "0dp",
     "text-max-lines": "1"
   },
   "key:pressed": {
-    "background": "var(--surface-variant)",
-    "foreground": "var(--on-surface)"
+    "background": "var(--primary)",
+    "foreground": "var(--on-primary)"
   },
   "key[code=10]": {
     "background": "var(--primary)",
@@ -124,6 +124,7 @@
   },
   "key-popup-element:focus": {
     "background": "var(--focused-popup-surface)",
+    "foreground": "var(--on-primary)",
     "shape": "var(--shape)"
   },
   "key-popup-element[code=-255]": {
