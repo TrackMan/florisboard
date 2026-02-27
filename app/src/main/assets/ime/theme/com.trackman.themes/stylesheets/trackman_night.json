@@ -1,7 +1,7 @@
 {
   "$schema": "https://schemas.florisboard.org/snygg/v2/stylesheet",
   "@defines": {
-    "--primary": "#ec691b",
+    "--primary": "#ec691a",
     "--primary-variant": "#bc5314",
     "--secondary": "#f57c00",
     "--secondary-variant": "#e65100",
@@ -10,7 +10,7 @@
     "--surface": "#424242",
     "--surface-variant": "#616161",
     "--popup-surface": "#757575",
-    "--focused-popup-surface": "#bdbdbd",
+    "--focused-popup-surface": "#ec691a",
     "--drag-marker": "rgb(255,0,0)",
     "--spacer-color": "rgba(255, 255, 255, 0.25)",
     "--one-hand-background": "#1b5e20",
@@ -65,14 +65,15 @@
   "key": {
     "background": "var(--surface)",
     "foreground": "var(--on-surface)",
-    "font-size": "22sp",
+    "font-size": "28sp",
+    "font-family": "sans-serif",
     "shape": "var(--shape)",
-    "shadow-elevation": "2dp",
+    "shadow-elevation": "0dp",
     "text-max-lines": "1"
   },
   "key:pressed": {
-    "background": "var(--surface-variant)",
-    "foreground": "var(--on-surface)"
+    "background": "var(--primary)",
+    "foreground": "var(--on-primary)"
   },
   "key[code=10]": {
     "background": "var(--primary)",
@@ -89,10 +90,10 @@
     "text-overflow": "ellipsis"
   },
   "key[code=-201,-202,-203]": {
-    "font-size": "18sp"
+    "font-size": "22sp"
   },
   "key[code=-204,-205]": {
-    "font-size": "12sp"
+    "font-size": "16sp"
   },
   "key[code=-205]": {
     "text-max-lines": "2"
@@ -111,20 +112,21 @@
   "key-popup-box": {
     "background": "var(--popup-surface)",
     "foreground": "var(--on-surface)",
-    "font-size": "22sp",
+    "font-size": "26sp",
     "shape": "var(--shape)",
     "shadow-elevation": "2dp"
   },
   "key-popup-element:focus": {
     "background": "var(--focused-popup-surface)",
+    "foreground": "var(--on-primary)",
     "shape": "var(--shape)"
   },
   "key-popup-element[code=-255]": {
-    "font-size": "18sp",
+    "font-size": "22sp",
     "text-max-lines": "1"
   },
   "key-popup-extended-indicator": {
-    "font-size": "16sp"
+    "font-size": "20sp"
   },
 
   "smartbar": {
